@@ -20,15 +20,17 @@ def crop(image, factor):
 	crop_end = int(width * (trim + factor))
 	return image[0:height, crop_start:crop_end]
 
-
-
+def mask(image):
+	gray_image = cv.cvtColor(image.copy(), cv.COLOR_BGR2GRAY)
+	return cv.threshold(gray_image, 220, 255, cv.THRESH_BINARY)[1]
 
 if __name__ == '__main__':
 	image = read('data/IMG_3361.JPG')
 	image = downscale(image, 0.25)
 	image = crop(image, 0.25)
-
 	write(image, 'data/output.jpg')
+	image = mask(image)
+	write(image, 'data/mask.jpg')
 
 
 
