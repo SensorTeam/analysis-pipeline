@@ -9,14 +9,26 @@ def downscale(image, factor):
 def read(file):
 	return cv.imread(file)
 
-def write(image):
-	cv.imwrite('data/output.jpg', image)
+def write(image, file):
+	cv.imwrite(file, image)
+
+def crop(image, factor):
+	width = image.shape[1]
+	height = image.shape[0]
+	trim = (1 - factor) / 2
+	crop_start = int(width * trim)
+	crop_end = int(width * (trim + factor))
+	return image[0:height, crop_start:crop_end]
+
+
+
 
 if __name__ == '__main__':
 	image = read('data/IMG_3361.JPG')
 	image = downscale(image, 0.25)
+	image = crop(image, 0.25)
 
-	write(image)
+	write(image, 'data/output.jpg')
 
 
 
