@@ -41,6 +41,22 @@ def batch():
 			if e.errno != eerno.EISDIR:
 				raise
 
+def intensity(image):
+	# assumes image is cropped to spectra
+
+	width = image.shape[1]
+	height = image.shape[0]
+	gray_image = cv.cvtColor(image.copy(), cv.COLOR_BGR2GRAY)
+
+	for i in range(0, height):
+		# for each row
+		# get row average intensity and add it to total
+		for j in range(0, width):
+			# for each pixel
+			# get pixel 'score' between 0 to 255 and divide total 'score' by width
+			# add it to to the average row intensity
+
+	# divide total score by height to get intensity
 
 if __name__ == '__main__':
 	batch()
