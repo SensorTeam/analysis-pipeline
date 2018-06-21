@@ -1,4 +1,6 @@
+import errno
 import cv2 as cv
+from glob import glob
 
 def downscale(image, factor):
 	scaled_width = int(image.shape[1] * factor)
@@ -22,15 +24,26 @@ def crop(image, factor):
 
 def mask(image):
 	gray_image = cv.cvtColor(image.copy(), cv.COLOR_BGR2GRAY)
-	return cv.threshold(gray_image, 220, 255, cv.THRESH_BINARY)[1]
+	return cv.threshold(gray_image, 200, 255, cv.THRESH_BINARY)[1]
+
+def batch():
+	files = glob('data/*.JPG')
+	for file in files:
+		try:
+			image = read(file)
+			image = downscale(image, 0.25)
+			image = crop(image, 0.25)
+			write(image, file[:-4] + '_cropped.jpg')
+			image = mask(image)
+			write(image, file[:-4] + '_masked.jpg')
+
+		except IOError as e:
+			if e.errno != eerno.EISDIR:
+				raise
+
 
 if __name__ == '__main__':
-	image = read('data/IMG_3361.JPG')
-	image = downscale(image, 0.25)
-	image = crop(image, 0.25)
-	write(image, 'data/output.jpg')
-	image = mask(image)
-	write(image, 'data/mask.jpg')
+	batch()
 
 
 
