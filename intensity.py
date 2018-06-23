@@ -31,6 +31,7 @@ def batch(path):
 		try:
 			images.append({
 				'title': file,
+				'number': int(file[-6:-4]),
 				'data': read(file),
 				'intensity': None
 			})
@@ -40,7 +41,10 @@ def batch(path):
 	return images
 
 if __name__ == '__main__':
-	images = batch('data/*.png')
-	for image in images:
+	cow_images = batch('data/IvT/Original/Cow/*.jpg')
+	cow_images = sorted(cow_images, key=lambda image: image['number'])
+
+	for image in cow_images:
 		image['intensity'] = intensity(image['data'])
-		print('{}: {:.2f}'.format(image['title'], image['intensity']))
+		print('{}: {:.2f}'.format(image['number'], image['intensity']))
+		
