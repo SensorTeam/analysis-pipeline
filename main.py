@@ -1,3 +1,4 @@
+import re
 import cv2 as cv
 import errno as er
 import colorsys as cs
@@ -55,7 +56,7 @@ def batch(path):
 				'title': file,
 				'score': None,
 				'image': read(file),
-				'order': int(file[-6:-4]) # assumes file ends in XX.jpg where X is an int from 0 to 9
+				'order': int(re.search(r'\d+',file).group()) # assumes each file is numbered, so an order can be assigned to it
 			})
 		except IOError as e:
 			if e.er != er.EISDIR:
