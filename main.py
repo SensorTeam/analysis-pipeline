@@ -93,7 +93,7 @@ def get_intesities(images):
 		intensities.append(
 			image['score']
 		)
-		print('{}: {:.2f}'.format(image['order'], image['score']))
+		print('{}: {:.2f}'.format(image['title'], image['score']))
 	return intensities
 
 def normalise(intensities):
@@ -112,7 +112,6 @@ def normalise(intensities):
 
 def process(title, path):
 	# batch processes a folder
-	print(title)
 	images = batch(path)
 	images = sort(images)
 	intensities = get_intesities(images)
@@ -123,18 +122,23 @@ def process(title, path):
 # --------------------------------
 if __name__ == '__main__':
 
-	# process photos
-	possum = process('Possum', 'data/IvT/Original/Possum/*.jpg')
-	fox = process('Fox', 'data/IvT/Original/Fox/*.jpg')
-	cow = process('Cow', 'data/IvT/Original/Cow/*.jpg')
+	try:
+		possum = process('Possum', 'data/IvT/Original/Possum/*.jpg')
+		fox = process('Fox', 'data/IvT/Original/Fox/*.jpg')
+		cow = process('Cow', 'data/IvT/Original/Cow/*.jpg')
 
-	# then plot!
-	pl.plot(EXPOSURE_TIMES_LABELS, possum, 'ro', label='Possum (5.0 mm)')
-	pl.plot(EXPOSURE_TIMES_LABELS, fox, 'go', label='Fox (2.5 mm)')
-	pl.plot(EXPOSURE_TIMES_LABELS, cow, 'bo', label='Cow (8.0 mm)')
+		pl.plot(EXPOSURE_TIMES_LABELS, possum, 'ro', label='Possum (5.0 mm)')
+		pl.plot(EXPOSURE_TIMES_LABELS, fox, 'go', label='Fox (2.5 mm)')
+		pl.plot(EXPOSURE_TIMES_LABELS, cow, 'bo', label='Cow (8.0 mm)')
 
-	pl.xlabel('Exposure time(s)')
-	pl.ylabel('Total saturation (%)')
+		pl.xlabel('Exposure time(s)')
+		pl.ylabel('Total saturation (%)')
+	except:
+		print('Data not found. Reverting to demo test data...')
+		demo = process('Test', 'test/*.png')
+		pl.plot(['01', '02', '03', '04', '05'], demo, 'kx', label='Test Data')
+
+		pl.ylabel('Total saturation (%)')
 
 	pl.legend()
 	pl.show()
